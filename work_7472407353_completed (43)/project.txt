@@ -1,0 +1,46 @@
+?Role: Act as a Principal DevOps Engineer and Full-Stack Architect. Generate a production-ready, error-free, self-hosted system called "AI Personal Server & Dev Monitor". This is a standalone system where the user hosts their own backend and manages it via the Android app.
+?Part 1: Self-Hosted Architecture & Backend Core
+?Architecture: A 1-to-1 standalone relationship. Backend, Database, and Agent reside on the user's infrastructure.
+?Database (PostgreSQL/SQLAlchemy Async): Schema includes Users (Local Admin), Servers, Metrics (CPU/RAM/Disk/Network), and AI_Logs.
+?FastAPI Foundation: Strict Pydantic models for 100% sync with Android Retrofit. Global exception handling for consistent JSON error responses.
+?Security: BCrypt password hashing and JWT session management. API Key authentication for the Server Agent.
+?Part 2: Modern Android UI & Setup Wizard
+?Initial Setup Wizard: The app must include a first-time launch wizard. Users must be able to input their own Server URL (Base URL) and create a local admin account.
+?Dynamic Connection: Use Retrofit with a dynamic Base URL interceptor.
+?Material 3 Dashboard: Real-time metrics with charts, a monospaced Log Viewer, and a dedicated AI Insight Panel.
+?Persistence: Securely store the Server URL, JWT, and API Keys using EncryptedSharedPreferences or Jetpack DataStore to ensure data persists after app restarts.
+?Part 3: Smart Agent & Background Alerts
+?Monitoring Agent: Python script using psutil. Generate an install_agent.sh bash script for automated installation and systemd setup.
+?Background Monitoring: Implement a background service in the Android app (WorkManager) to fetch health status. Send Local Push Notifications if CPU/RAM usage exceeds safety thresholds (e.g., 90%), even if the app is closed.
+?Pluggable AI Logic: The AI service is a "pluggable" layer. The app must have a toggle to enter a personal OpenAI or Gemini API Key. The backend uses this key from request headers to perform analysis.
+?Part 4: Deployment & Security Hardening
+?Docker Setup: A docker-compose.yml to spin up FastAPI, PostgreSQL, and Redis.
+?Security Layers: Whitelisted agent commands only (no arbitrary shell execution). Rate limiting on /auth and /analyze endpoints. Provide Nginx boilerplate for SSL/HTTPS termination.
+?Part 5: CI/CD & Build Success Guarantee
+?GitHub Actions: Workflow to run ./gradlew assembleDebug (or assembleRelease if keys provided) and upload the APK as an artifact.
+?Build Rules: Explicitly match Kotlin and Compose Compiler versions in libs.versions.toml. Ensure Java 17 compatibility.
+?Integration Check: Verify all Retrofit @GET/@POST match FastAPI routes exactly.
+?[CORE OPERATING PRINCIPLE]: In case of any overlap, prioritize Standalone Hosting and User-provided API Keys. The system must be entirely independent of any external central server. The Android app must guide the user through the initial connection to their custom backend via a clean Setup Wizard.
+
+After generating the full production system for "AI Personal Server & Dev Monitor", provide ONLY the final documentation section.
+
+Include:
+
+1. A short simple explanation of the final generated code files (Backend, Android App, Server Agent, AI integration).
+
+2. A brief overview of the project structure.
+
+3. Step-by-step instructions on how to build the Android app into an APK using Linux CLI (Gradle commands only).
+
+4. Include a production-ready requirements.txt file for:
+   - FastAPI Backend
+   - Python Server Agent
+
+5. Provide installation instructions:
+   - how to install dependencies
+   - how to run backend
+   - how to run server agent
+   - how to build APK
+
+Keep everything simple, clear, and production-ready.
+No extra features, no additional sections.
