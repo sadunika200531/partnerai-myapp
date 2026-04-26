@@ -18,16 +18,23 @@ jobs:
         distribution: 'temurin'
         cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x "work_7472407353_completed (43)/android/gradlew"
+    - name: Setup Gradle Wrapper
+      run: |
+        # ඇන්ඩ්‍රොයිඩ් ප්‍රොජෙක්ට් එක තියෙන තැන සොයාගනී
+        PROJECT_PATH=$(find . -name "build.gradle*" -not -path "*/node_modules/*" | head -n 1 | xargs dirname)
+        cd "$PROJECT_PATH"
+        # Wrapper එක නැතිනම් අලුතින් සාදයි
+        gradle wrapper
 
     - name: Build with Gradle
       run: |
-        cd "work_7472407353_completed (43)/android"
+        PROJECT_PATH=$(find . -name "gradlew" -not -path "*/node_modules/*" | head -n 1 | xargs dirname)
+        cd "$PROJECT_PATH"
+        chmod +x gradlew
         ./gradlew assembleDebug
 
     - name: Upload APK
       uses: actions/upload-artifact@v4
       with:
         name: my-app-apk
-        path: "work_7472407353_completed (43)/android/app/build/outputs/apk/debug/app-debug.apk"
+        path: "**/app/build/outputs/apk/debug/app-debug.apk"
